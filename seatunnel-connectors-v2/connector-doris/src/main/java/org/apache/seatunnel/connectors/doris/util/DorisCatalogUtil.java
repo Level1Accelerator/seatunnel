@@ -190,6 +190,14 @@ public class DorisCatalogUtil {
                         .map(x -> DorisCatalogUtil.columnToDorisType(x, typeConverter))
                         .collect(Collectors.joining(",\n"));
 
+        if(StringUtils.isNotBlank(rowTypeFields)) {
+            template = template.replaceAll(
+                    SaveModePlaceHolder.ROWTYPE_FIELDS.getReplacePlaceHolder(), rowTypeFields);
+        }else{
+            template = template.replaceAll(
+                    ",\n"+SaveModePlaceHolder.ROWTYPE_FIELDS.getReplacePlaceHolder(), rowTypeFields);
+        }
+
         if (template.contains(SaveModePlaceHolder.TABLE_NAME.getPlaceHolder())) {
             // TODO: Remove this compatibility config
             template =
@@ -205,8 +213,8 @@ public class DorisCatalogUtil {
                         tablePath.getDatabaseName())
                 .replaceAll(
                         SaveModePlaceHolder.TABLE.getReplacePlaceHolder(), tablePath.getTableName())
-                .replaceAll(
-                        SaveModePlaceHolder.ROWTYPE_FIELDS.getReplacePlaceHolder(), rowTypeFields)
+//                .replaceAll(
+//                        SaveModePlaceHolder.ROWTYPE_FIELDS.getReplacePlaceHolder(), rowTypeFields)
                 .replaceAll(
                         SaveModePlaceHolder.COMMENT.getReplacePlaceHolder(),
                         Objects.isNull(catalogTable.getComment())

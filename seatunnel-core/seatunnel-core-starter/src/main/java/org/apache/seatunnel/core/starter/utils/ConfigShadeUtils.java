@@ -17,6 +17,7 @@
 
 package org.apache.seatunnel.core.starter.utils;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.seatunnel.shade.com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.seatunnel.shade.com.google.common.base.Preconditions;
 import org.apache.seatunnel.shade.com.typesafe.config.Config;
@@ -31,16 +32,7 @@ import org.apache.seatunnel.common.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 
 /** Config shade utilities */
@@ -151,7 +143,10 @@ public final class ConfigShadeUtils {
         configShade.open(props);
 
         Set<String> sensitiveOptions = new HashSet<>(getSensitiveOptions(config));
+        log.info("Sensitive options: {}", sensitiveOptions);
         sensitiveOptions.addAll(Arrays.asList(configShade.sensitiveOptions()));
+        log.info("Sensitive options after add: {}", sensitiveOptions);
+
         BiFunction<String, Object, Object> processFunction =
                 (key, value) -> {
                     if (value instanceof List) {
@@ -207,7 +202,9 @@ public final class ConfigShadeUtils {
                                         : ConfigFactory.empty(),
                                 SHADE_OPTIONS_OPTION,
                                 new ArrayList<>()));
-        sensitiveOptions.addAll(Arrays.asList(DEFAULT_SENSITIVE_KEYWORDS));
+        if(CollectionUtils.isNotEmpty(sensitiveOptions)) {
+            sensitiveOptions.addAll(Arrays.asList(DEFAULT_SENSITIVE_KEYWORDS));
+        }
         return sensitiveOptions;
     }
 

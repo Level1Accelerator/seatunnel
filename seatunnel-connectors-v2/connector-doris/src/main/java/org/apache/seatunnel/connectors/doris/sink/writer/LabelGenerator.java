@@ -27,9 +27,32 @@ public class LabelGenerator {
         this.enable2PC = enable2PC;
     }
 
-    public String generateLabel(long chkId) {
-        return enable2PC
-                ? labelPrefix + "_" + chkId
-                : labelPrefix + "_" + System.currentTimeMillis();
+//    public String generateLabel(long chkId) {
+//        return enable2PC
+//                ? labelPrefix + "_" + chkId
+//                : labelPrefix + "_" + System.currentTimeMillis();
+//    }
+public String generateLabel(long chkId) {
+    return enable2PC
+            ? labelPrefix + "_" + chkId
+            : getSubStringLabel(labelPrefix) + "_" + System.currentTimeMillis();
+}
+
+    public static String getSubStringLabel(String label) {
+        if (label.length() > 114) {
+            // 找到最后一个下划线的位置，这是前缀部分和标识部分的分隔点
+            int lastUnderlineIndex = label.lastIndexOf('_');
+            if (lastUnderlineIndex > 0) {
+                String lastUnderline = label.substring(0, lastUnderlineIndex);
+                int lastSecondUnderlineIndex = lastUnderline.lastIndexOf('_');
+                String lastSecondUnderline = lastUnderline.substring(0, lastSecondUnderlineIndex);
+                lastSecondUnderline = lastSecondUnderline.substring(0, 90);
+                String substring = label.substring(lastSecondUnderlineIndex);
+                return lastSecondUnderline + substring;
+            }
+            // 如果无法正确分割，则直接取前128个字符
+            return label.substring(0, 128);
+        }
+        return label;
     }
 }

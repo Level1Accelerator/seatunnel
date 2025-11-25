@@ -191,10 +191,11 @@ public class MySqlTypeConverter implements TypeConverter<BasicTypeDefine<MysqlTy
                 builder.dataType(BasicType.LONG_TYPE);
                 break;
             case MYSQL_BIGINT_UNSIGNED:
-                DecimalType intDecimalType = new DecimalType(20, 0);
-                builder.dataType(intDecimalType);
-                builder.columnLength(Long.valueOf(intDecimalType.getPrecision()));
-                builder.scale(intDecimalType.getScale());
+//                DecimalType intDecimalType = new DecimalType(20, 0);
+//                builder.dataType(intDecimalType);
+//                builder.columnLength(Long.valueOf(intDecimalType.getPrecision()));
+//                builder.scale(intDecimalType.getScale());
+                builder.dataType(BasicType.LONG_TYPE);
                 break;
             case MYSQL_FLOAT:
                 builder.dataType(BasicType.FLOAT_TYPE);

@@ -343,8 +343,11 @@ public abstract class AbstractDorisTypeConverter implements TypeConverter<BasicT
                             scale);
                 }
 
-                builder.columnType(String.format("%s(%s,%s)", DORIS_DECIMALV3, precision, scale));
-                builder.dataType(DORIS_DECIMALV3);
+//                builder.columnType(String.format("%s(%s,%s)", DORIS_DECIMALV3, precision, scale));
+//                builder.dataType(DORIS_DECIMALV3);
+
+                builder.columnType(String.format("%s(%s,%s)", DORIS_DECIMAL, precision, scale));
+                builder.dataType(DORIS_DECIMAL);
                 builder.precision((long) precision);
                 builder.scale(scale);
                 break;
